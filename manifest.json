@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Twitter Sourcer",
+  "version": "1.0",
+
+  "description": "Tells you what propaganda you're ingesting",
+
+  "icons": {
+    "48": "icons/twitter-sourcer-48.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.twitter.com/*"],
+      "js": ["twitterSourcer.js"],
+      "css": ["styles.css"]
+    }
+  ]
+}
