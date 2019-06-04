@@ -1,18 +1,8 @@
 let port = browser.runtime.connect({name: "Twitter Sourcer"});
 port.onMessage.addListener((message) => {
-  console.log(message)
+  let tweet = document.getElementById(`stream-item-tweet-${message.id}`);
+  insertNodeAfter(tweet);
 });
-
-let russianAccounts = [
-  "GovernmentRF",
-  "Pravitelstvo_RF",
-  "Russia",
-  "mfa_russia",
-  "KremlinRussia_E",
-  "KremlinRussia",
-  "MedvedevRussiaE",
-  "MedvedevRussia"
-];
 
 let stream = document.getElementById("stream-items-id");
 let config = { attributes: true, childList: true, subtree: false };
@@ -26,8 +16,10 @@ let insertNodeAfter = (tweet) => {
 
 let needsAlert = (child) => {
   if (child.classList && child.classList.contains("tweet")) {
-    port.postMessage({screen_name: child.getAttribute("data-screen-name")})
-    return russianAccounts.includes(child.getAttribute("data-screen-name"));
+    port.postMessage({
+      screen_name: child.getAttribute("data-screen-name"),
+      id: child.getAttribute("data-item-id")
+    })
   };
 
   return false;
@@ -35,9 +27,7 @@ let needsAlert = (child) => {
 
 let insertAlerts = (tweet) => {
   tweet.childNodes.forEach((child) => {
-    if (needsAlert(child)) {
-      insertNodeAfter(tweet);
-    };
+    needsAlert(child)
   });
 };
 
