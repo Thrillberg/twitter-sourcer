@@ -1,3 +1,8 @@
+let port = browser.runtime.connect({name: "Twitter Sourcer"});
+port.onMessage.addListener((message) => {
+  console.log(message)
+});
+
 let russianAccounts = [
   "GovernmentRF",
   "Pravitelstvo_RF",
@@ -21,6 +26,7 @@ let insertNodeAfter = (tweet) => {
 
 let needsAlert = (child) => {
   if (child.classList && child.classList.contains("tweet")) {
+    port.postMessage({screen_name: child.getAttribute("data-screen-name")})
     return russianAccounts.includes(child.getAttribute("data-screen-name"));
   };
 

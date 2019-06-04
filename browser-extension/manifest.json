@@ -9,11 +9,19 @@
     "48": "icons/twitter-sourcer-48.png"
   },
 
+  "background": {
+    "scripts": ["background-script.js"]
+  },
+
   "content_scripts": [
     {
       "matches": ["*://*.twitter.com/*"],
-      "js": ["twitterSourcer.js"],
+      "js": ["twitter-sourcer.js"],
       "css": ["styles.css"]
     }
+  ],
+
+  "permissions": [
+    "*://localhost:3000/*"
   ]
 }
