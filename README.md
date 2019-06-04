@@ -9,8 +9,11 @@ about users.
 ## Plan
 
 This is very flexible but represents my current thinking:
+
 ~~- Make basic extension~~
+
 ~~- Make basic server and connect it to extension~~
+
 - Identify touchstones of political ideology
   (A touchstone is a Twitter account that skews very highly in favor of the
 ideology, the more popular the account, the better.)
