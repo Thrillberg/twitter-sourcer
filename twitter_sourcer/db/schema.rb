@@ -20,7 +20,10 @@ ActiveRecord::Schema.define(version: 2019_06_05_163815) do
     t.string "name", null: false
     t.string "screen_name", null: false
     t.integer "friends_count", null: false
+    t.datetime "populated_at"
     t.bigint "follower_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["follower_id"], name: "index_twitter_accounts_on_follower_id"
   end
 
