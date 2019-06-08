@@ -1,14 +1,36 @@
 class TwitterAccountsController < ApplicationController
-  def show
-    headers['Access-Control-Allow-Origin'] = '*'
+  before_action :do_cors
 
+  FLAGGED = []
+
+  def show
+    if subject.populated_at
+      subject.friends.map do |friend|
+        if FLAGGED.include? friend.screen_name
+          render json: friend
+        else
+          friend.friends.map do |superfriend|
+            if FLAGGED.include? friend.screen_name
+              render json: friend
+            end
+          end
+        end
+      end
+    else
+      collect_friends(subject)
+    end
+  end
+
+  def collect_friends(subject)
     get_friends(subject)
 
-    everyone = subject.friends.each do |friend|
+    subject.friends.each do |friend|
       get_friends(friend)
     end
+  end
 
-    render json: everyone
+  def do_cors
+    headers['Access-Control-Allow-Origin'] = '*'
   end
 
   private
