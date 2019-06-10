@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_05_163815) do
+ActiveRecord::Schema.define(version: 2019_06_10_155459) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "political_positions", force: :cascade do |t|
+    t.string "twitter_id", null: false
+    t.string "screen_name", null: false
+    t.boolean "is_climate_change_denier"
+    t.bigint "twitter_account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["twitter_account_id"], name: "index_political_positions_on_twitter_account_id"
+  end
 
   create_table "twitter_accounts", force: :cascade do |t|
     t.string "twitter_id", null: false
