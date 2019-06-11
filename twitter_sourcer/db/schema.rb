@@ -16,8 +16,6 @@ ActiveRecord::Schema.define(version: 2019_06_10_155459) do
   enable_extension "plpgsql"
 
   create_table "political_positions", force: :cascade do |t|
-    t.string "twitter_id", null: false
-    t.string "screen_name", null: false
     t.boolean "is_climate_change_denier"
     t.bigint "twitter_account_id"
     t.datetime "created_at", null: false
