@@ -9,8 +9,6 @@ class TwitterInterface
       )
     rescue Twitter::Error::TooManyRequests => error
       p "Too many requests!"
-      sleep error.rate_limit.reset_in + 1
-      retry
     end
   end
 
