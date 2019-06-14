@@ -1,31 +1,11 @@
 class TwitterAccountsController < ApplicationController
   before_action :do_cors
 
-  FLAGGED = []
-
   def show
-    if subject.populated_at
-      subject.friends.map do |friend|
-        if FLAGGED.include? friend.screen_name
-          render json: friend
-        else
-          friend.friends.map do |superfriend|
-            if FLAGGED.include? friend.screen_name
-              render json: friend
-            end
-          end
-        end
+    subject.friends.map do |friend|
+      if climate_change_deniers.include? friend
+        render json: friend
       end
-    else
-      collect_friends(subject)
-    end
-  end
-
-  def collect_friends(subject)
-    get_friends(subject)
-
-    subject.friends.each do |friend|
-      get_friends(friend)
     end
   end
 
@@ -37,6 +17,13 @@ class TwitterAccountsController < ApplicationController
 
   def subject
     get_twitter_account || create_account_from(params: params)
+  end
+
+  def climate_change_deniers
+    PoliticalPosition.where(is_climate_change_denier: true).
+      map do |position|
+      position.twitter_account
+    end
   end
 
   def get_twitter_account
@@ -58,20 +45,5 @@ class TwitterAccountsController < ApplicationController
       friends_count: account.friends_count,
       follower: follower,
     )
-  end
-
-  def get_friends(twitter_account)
-    unless twitter_account.populated_at
-      screen_name = twitter_account.screen_name
-      friends = TwitterInterface.friends(screen_name)
-      friends.map do |friend|
-        TwitterAccount.find_by_twitter_id(friend.id) ||
-          create_account(
-            friend,
-            follower: twitter_account,
-          )
-      end
-      twitter_account.update(populated_at: Time.now)
-    end
   end
 end
