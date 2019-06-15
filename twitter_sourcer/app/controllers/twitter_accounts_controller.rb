@@ -20,10 +20,9 @@ class TwitterAccountsController < ApplicationController
   end
 
   def climate_change_deniers
-    PoliticalPosition.where(is_climate_change_denier: true).
-      map do |position|
-      position.twitter_account
-    end
+    TwitterAccount.includes(:political_positions).where(
+      political_positions: { is_climate_change_denier: true },
+    )
   end
 
   def get_twitter_account
