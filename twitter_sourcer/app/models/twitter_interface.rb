@@ -17,7 +17,7 @@ class TwitterInterface
   end
 
   def self.client
-    @_client ||= Twitter::REST::Client.new do |config|
+    Twitter::REST::Client.new do |config|
       config.consumer_key = ENV.fetch("TWITTER_CONSUMER_API_KEY")
       config.consumer_secret = ENV.fetch("TWITTER_CONSUMER_API_SECRET_KEY")
       config.access_token = ENV.fetch("TWITTER_ACCESS_TOKEN")
